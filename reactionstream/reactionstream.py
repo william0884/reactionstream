@@ -76,20 +76,20 @@
 # Sponsorship data 
 # 
 
-# In[2]:
+# In[3]:
 
 
 import pymongo
 import arrow
 
 
-# In[3]:
+# In[4]:
 
 
 import boto3 
 
 
-# In[4]:
+# In[5]:
 
 
 from PIL import ImageDraw, ImageFont, Image, ImageFilter
@@ -97,13 +97,13 @@ import os
 import PIL
 
 
-# In[5]:
+# In[6]:
 
 
 from shutil import copyfile
 
 
-# In[6]:
+# In[7]:
 
 
 def mergsimg(imgone, imgtwo, out):
@@ -114,20 +114,20 @@ def mergsimg(imgone, imgtwo, out):
     
 
 
-# In[7]:
+# In[8]:
 
 
 with open('/home/pi/mongo.txt', 'r') as monconf:
     monc = monconf.read().replace('\n', '')
 
 
-# In[8]:
+# In[9]:
 
 
 s3 = boto3.resource('s3')
 
 
-# In[42]:
+# In[10]:
 
 
 def resizetemp(sourcefil, tempfile, outfil):
@@ -142,19 +142,19 @@ def resizetemp(sourcefil, tempfile, outfil):
 #earimg = PIL.Image.open(imgtwo)
 
 
-# In[43]:
+# In[11]:
 
 
 #resizetemp('/home/pi/git/reactionstream/reactionstream/test.png', '/home/pi/Downloads/th.png', 'hello.png')
 
 
-# In[ ]:
+# In[12]:
 
 
 #throw it out there. one quick change. fandom. top 5 in history. mount rushmore. kid photo of myself. incorputed into a scene. 
 
 
-# In[33]:
+# In[13]:
 
 
 #marimg = PIL.Image.open('/home/pi/git/reactionstream/reactionstream/test.png')
@@ -162,31 +162,31 @@ def resizetemp(sourcefil, tempfile, outfil):
 #earimg = PIL.Image.open(imgtwo)
 
 
-# In[37]:
+# In[14]:
 
 
 #marimg.size
 
 
-# In[40]:
+# In[15]:
 
 
 #img = PIL.Image.open('/home/pi/Downloads/th.png')
 
 
-# In[41]:
+# In[16]:
 
 
 #img.resize(marimg.size)
 
 
-# In[10]:
+# In[17]:
 
 
 client = pymongo.MongoClient(monc)
 
 
-# In[11]:
+# In[18]:
 
 
 db = client['reactionstream']
@@ -195,7 +195,7 @@ db = client['reactionstream']
 series_collection = db['reaction']
 
 
-# In[38]:
+# In[19]:
 
 
 def mergeupload(img1, img2, output):
@@ -219,10 +219,32 @@ def mergeupload(img1, img2, output):
 
 
 
-# In[21]:
+# In[20]:
 
 
 import subprocess
+
+
+# In[21]:
+
+
+import PIL
+
+
+# In[98]:
+
+
+def resizegame(imgpath):
+    imgp = os.listdir(imgpath)
+    for imgs in imgp:
+        bakimg = PIL.Image.open(imgpath + imgs)
+        #print(bakimg.size)
+        #print bakimg.width /2
+        #bakimg.height / 2
+        bakimg.resize((213, 120))
+        print(bakimg.size)
+        bakimg.save(imgpath + imgs)
+        
 
 
 # In[ ]:
@@ -231,34 +253,224 @@ import subprocess
 
 
 
-# In[55]:
+# In[63]:
 
 
-def videotoframe(filvid):
-    os.system('ffmpeg -i /home/pi/xUGcCApcAVI.mp4 cut1-%03d.png')
+bakimg = PIL.Image.open('ttt/cut1-001.png')
+marimg = PIL.Image.open('/home/pi/Downloads/korea.png').resize(bakimg.size)
+
+for indpn in os.listdir('/home/pi/git/reactionstream/reactionstream/ttt'):
+    card = Image.new("RGBA", bakimg.size, (255, 255, 255))
+    img = Image.open('/home/pi/git/reactionstream/reactionstream/ttt/' + indpn).convert("RGBA")
+    x, y = img.size
+    card.paste(img, (0, 0, x, y), img)
+    
+    #mergsimg('resize.png', 'cut1-006.png', 'kia.png')
+    #earimg = PIL.Image.open('/home/pi/Downloads/th.png')
+    Image.alpha_composite(card, marimg).save('/home/pi/git/reactionstream/reactionstream/tt/' + indpn, format="png")
+
+    #card.save('/home/pi/git/reactionstream/reactionstream/' + indpn, format="png")
+
+    
+earthspin = os.listdir('/home/pi/git/reactionstream/reactionstream/tt/')
+images = list()
+for filen in earthspin:
+    images.append(imageio.imread('/home/pi/git/reactionstream/reactionstream/tt/' + filen))
+imageio.mimsave('mars.gif', images, fps=3)
+
+
+# In[1]:
+
+
+#import os
+#import glob
+#from natsort import natsorted
+#from moviepy.editor import *
+
+#base_dir = os.path.realpath("./images")
+#print(base_dir)
+
+#gif_name = 'pic'
+#fps = 24
+
+#file_list = glob.glob('ttt/*.png')  # Get all the pngs in the current directory
+#len(file_list)
+#file_list_sorted = natsorted(file_list,reverse=False)  # Sort the images
+
+#clips = [ImageClip(m).set_duration(2)
+#         for m in file_list_sorted]
+
+#concat_clip = concatenate_videoclips(clips, method="compose")
+#concat_clip.write_videofile("test.mp4", fps=30)
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+#bakimg.save()
+
+
+# In[128]:
+
+
+#mergsimg('resize.png', 'cut1-006.png', 'kia.png')
+
+
+# In[129]:
+
+
+#myimg = PIL.Image.open('kia.png')
+
+
+# In[130]:
+
+
+#myimg
+
+
+# In[134]:
+
+
+#Image.alpha_composite(myimg,marresiz).save('some.png')
+
+
+# In[135]:
+
+
+#PIL.Image.open('some.png')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[43]:
+
+
+#os.system('ffmpeg -i RxZR6bTi29g.mp4 ttt/cut1-%03d.png')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[21]:
+
+
+def videotoframe(filvid, tempvid, outfile):
+    os.system('ffmpeg -i {} cut1-%03d.png'.format(filvid))
+    #bakimg = PIL.Image.open('cut1-001.png')
+    #bakimg.size
+    #resizetemp(bakimg, tempvid, outfile)
     #check size of outputed pngs. resize the overlay image to match
     #merge overlay image to this background image. 
 
 
-# In[61]:
+# In[29]:
+
+
+def resizvid(btemp, outputf): 
+    #bakimg = PIL.Image.open('cut1-001.png')
+    #bakimg.size
+    resizetemp('cut1-001.png', btemp, outputf)
+
+
+# In[ ]:
+
+
+
+
+
+# In[30]:
+
+
+#resizvid('/home/pi/Downloads/th.png', 'out.png')
+
+
+# In[ ]:
+
+
+
+
+
+# In[57]:
+
+
+#videotoframe('EKN2U3nHZpQ.mp4', 
+#            '/home/pi/Downloads/th.png', 'hi.png')
+
+
+# In[58]:
+
+
+#mergeupload('cut1-100.png', 'hi.png', 'fin.png')
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[59]:
 
 
 #videotoframe('/home/pi/xUGcCApcAVI.mp4')
 
 
-# In[14]:
+# In[60]:
 
 
 #mergsimg('/home/pi/Downloads/thbase.png', '/home/pi/Downloads/th.png', 'drink.png')
 
 
-# In[15]:
+# In[61]:
 
 
 #data = open('' + 'drink.png', 'rb')
 
 
-# In[26]:
+# In[62]:
 
 
 #data
