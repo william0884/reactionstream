@@ -247,36 +247,76 @@ def resizegame(imgpath):
         
 
 
+# In[140]:
+
+
+def videotogif(videofile, tempfil, dirfol, dirsave, gifname):
+    #os.system('ffmpeg -i {} {}/cut1-%03d.png'.format(videofile, dirfol))
+    bakimg = PIL.Image.open('{}cut1-001.png'.format(dirfol))
+    marimg = PIL.Image.open(tempfil).resize(bakimg.size)
+
+    for indpn in os.listdir(dirfol):
+        card = Image.new("RGBA", bakimg.size, (255, 255, 255))
+        img = Image.open(dirfol + indpn).convert("RGBA")
+        x, y = img.size
+        card.paste(img, (0, 0, x, y), img)
+
+        #mergsimg('resize.png', 'cut1-006.png', 'kia.png')
+        #earimg = PIL.Image.open('/home/pi/Downloads/th.png')
+        Image.alpha_composite(card, marimg).save(dirsave + indpn, format="png")
+
+        #card.save('/home/pi/git/reactionstream/reactionstream/' + indpn, format="png")
+
+
+    earthspin = os.listdir(dirsave)
+    images = list()
+    for filen in earthspin:
+        images.append(imageio.imread(dirsave + filen))
+    imageio.mimsave(gifname, images, fps=3)
+
+
+# In[142]:
+
+
+#videotogif('/media/pi/2A7B-DD82/RxZR6bTi29g.mp4', 
+#           '/media/pi/2A7B-DD82/aceblack/Documents/devilharpy.png',
+#            '/media/pi/2A7B-DD82/sie/', '/media/pi/2A7B-DD82/oput/', 'afterhack.gif') # 
+
+
+# In[ ]:
+
+
+#ls oput
+
+
 # In[ ]:
 
 
 
 
 
-# In[63]:
+# In[ ]:
 
 
-bakimg = PIL.Image.open('ttt/cut1-001.png')
-marimg = PIL.Image.open('/home/pi/Downloads/korea.png').resize(bakimg.size)
 
-for indpn in os.listdir('/home/pi/git/reactionstream/reactionstream/ttt'):
-    card = Image.new("RGBA", bakimg.size, (255, 255, 255))
-    img = Image.open('/home/pi/git/reactionstream/reactionstream/ttt/' + indpn).convert("RGBA")
-    x, y = img.size
-    card.paste(img, (0, 0, x, y), img)
-    
-    #mergsimg('resize.png', 'cut1-006.png', 'kia.png')
-    #earimg = PIL.Image.open('/home/pi/Downloads/th.png')
-    Image.alpha_composite(card, marimg).save('/home/pi/git/reactionstream/reactionstream/tt/' + indpn, format="png")
 
-    #card.save('/home/pi/git/reactionstream/reactionstream/' + indpn, format="png")
 
-    
-earthspin = os.listdir('/home/pi/git/reactionstream/reactionstream/tt/')
-images = list()
-for filen in earthspin:
-    images.append(imageio.imread('/home/pi/git/reactionstream/reactionstream/tt/' + filen))
-imageio.mimsave('mars.gif', images, fps=3)
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
+
+
+# In[ ]:
+
+
+
 
 
 # In[1]:
