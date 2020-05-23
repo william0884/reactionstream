@@ -76,20 +76,20 @@
 # Sponsorship data 
 # 
 
-# In[3]:
+# In[145]:
 
 
 import pymongo
 import arrow
 
 
-# In[4]:
+# In[146]:
 
 
 import boto3 
 
 
-# In[5]:
+# In[147]:
 
 
 from PIL import ImageDraw, ImageFont, Image, ImageFilter
@@ -97,13 +97,13 @@ import os
 import PIL
 
 
-# In[6]:
+# In[148]:
 
 
 from shutil import copyfile
 
 
-# In[7]:
+# In[149]:
 
 
 def mergsimg(imgone, imgtwo, out):
@@ -114,20 +114,20 @@ def mergsimg(imgone, imgtwo, out):
     
 
 
-# In[8]:
+# In[150]:
 
 
 with open('/home/pi/mongo.txt', 'r') as monconf:
     monc = monconf.read().replace('\n', '')
 
 
-# In[9]:
+# In[151]:
 
 
 s3 = boto3.resource('s3')
 
 
-# In[10]:
+# In[152]:
 
 
 def resizetemp(sourcefil, tempfile, outfil):
@@ -142,19 +142,19 @@ def resizetemp(sourcefil, tempfile, outfil):
 #earimg = PIL.Image.open(imgtwo)
 
 
-# In[11]:
+# In[153]:
 
 
 #resizetemp('/home/pi/git/reactionstream/reactionstream/test.png', '/home/pi/Downloads/th.png', 'hello.png')
 
 
-# In[12]:
+# In[154]:
 
 
 #throw it out there. one quick change. fandom. top 5 in history. mount rushmore. kid photo of myself. incorputed into a scene. 
 
 
-# In[13]:
+# In[155]:
 
 
 #marimg = PIL.Image.open('/home/pi/git/reactionstream/reactionstream/test.png')
@@ -162,31 +162,31 @@ def resizetemp(sourcefil, tempfile, outfil):
 #earimg = PIL.Image.open(imgtwo)
 
 
-# In[14]:
+# In[156]:
 
 
 #marimg.size
 
 
-# In[15]:
+# In[157]:
 
 
 #img = PIL.Image.open('/home/pi/Downloads/th.png')
 
 
-# In[16]:
+# In[158]:
 
 
 #img.resize(marimg.size)
 
 
-# In[17]:
+# In[159]:
 
 
 client = pymongo.MongoClient(monc)
 
 
-# In[18]:
+# In[160]:
 
 
 db = client['reactionstream']
@@ -195,7 +195,7 @@ db = client['reactionstream']
 series_collection = db['reaction']
 
 
-# In[19]:
+# In[161]:
 
 
 def mergeupload(img1, img2, output):
@@ -213,25 +213,58 @@ def mergeupload(img1, img2, output):
     #return(series_collection.insert_one(post).inserted_id)
 
 
+# In[162]:
+
+
+import subprocess
+
+
+# In[168]:
+
+
+import PIL
+
+
+# In[171]:
+
+
+def alphatemp(tempimg):
+    #give it the template file and it removes white 
+    #from the image. 
+    img = Image.open(tempimg)
+    img = img.convert("RGBA")
+
+    pixdata = img.load()
+
+    width, height = img.size
+    for y in range(height):
+        for x in range(width):
+            if pixdata[x, y] == (255, 255, 255, 255):
+                pixdata[x, y] = (255, 255, 255, 0)
+
+    img.save(tempimg, "PNG")
+    
+
+
+# In[172]:
+
+
+#alphatemp('/home/pi/Documents/yui.png')
+
+
 # In[ ]:
 
 
 
 
 
-# In[20]:
+# In[ ]:
 
 
-import subprocess
 
 
-# In[21]:
 
-
-import PIL
-
-
-# In[98]:
+# In[164]:
 
 
 def resizegame(imgpath):
@@ -247,19 +280,22 @@ def resizegame(imgpath):
         
 
 
-# In[140]:
+# In[166]:
 
 
-def videotogif(videofile, tempfil, dirfol, dirsave, gifname):
+def videotogif(tempfil, dirfol, dirsave, gifname):
     #os.system('ffmpeg -i {} {}/cut1-%03d.png'.format(videofile, dirfol))
     bakimg = PIL.Image.open('{}cut1-001.png'.format(dirfol))
     marimg = PIL.Image.open(tempfil).resize(bakimg.size)
+    
+    
 
     for indpn in os.listdir(dirfol):
         card = Image.new("RGBA", bakimg.size, (255, 255, 255))
         img = Image.open(dirfol + indpn).convert("RGBA")
         x, y = img.size
         card.paste(img, (0, 0, x, y), img)
+
 
         #mergsimg('resize.png', 'cut1-006.png', 'kia.png')
         #earimg = PIL.Image.open('/home/pi/Downloads/th.png')
@@ -273,17 +309,18 @@ def videotogif(videofile, tempfil, dirfol, dirsave, gifname):
     for filen in earthspin:
         images.append(imageio.imread(dirsave + filen))
     imageio.mimsave(gifname, images, fps=3)
+    data = open(gifname, 'rb')
+    s3.Bucket('printrecsup').put_object(Key=gifname, Body=data)
 
 
-# In[142]:
+# In[167]:
 
 
-#videotogif('/media/pi/2A7B-DD82/RxZR6bTi29g.mp4', 
-#           '/media/pi/2A7B-DD82/aceblack/Documents/devilharpy.png',
-#            '/media/pi/2A7B-DD82/sie/', '/media/pi/2A7B-DD82/oput/', 'afterhack.gif') # 
+videotogif('/media/pi/2A7B-DD82/aceblack/Documents/devilharpy.png',
+            '/media/pi/2A7B-DD82/sie/', '/media/pi/2A7B-DD82/oput/', 'afterhack.gif') # 
 
 
-# In[ ]:
+# In[144]:
 
 
 #ls oput
