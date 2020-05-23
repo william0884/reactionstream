@@ -246,10 +246,16 @@ def alphatemp(tempimg):
     
 
 
-# In[172]:
+# In[178]:
 
 
-#alphatemp('/home/pi/Documents/yui.png')
+#alphatemp('/media/pi/2A7B-DD82/aceblack/Documents/devilharpy.png')
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
@@ -264,7 +270,7 @@ def alphatemp(tempimg):
 
 
 
-# In[164]:
+# In[186]:
 
 
 def resizegame(imgpath):
@@ -274,16 +280,34 @@ def resizegame(imgpath):
         #print(bakimg.size)
         #print bakimg.width /2
         #bakimg.height / 2
-        bakimg.resize((213, 120))
-        print(bakimg.size)
-        bakimg.save(imgpath + imgs)
+        bakin = bakimg.resize((213, 120))
+        print(bakin.size)
+        bakin.save(imgpath + imgs)
         
 
 
-# In[166]:
+# In[204]:
 
 
-def videotogif(tempfil, dirfol, dirsave, gifname):
+#resizegame('/media/pi/2A7B-DD82/gifit/')
+
+
+# In[188]:
+
+
+213 / 2 
+
+
+# In[189]:
+
+
+120 / 2
+
+
+# In[190]:
+
+
+def videotogif(tempfil, dirfol, dirsave):
     #os.system('ffmpeg -i {} {}/cut1-%03d.png'.format(videofile, dirfol))
     bakimg = PIL.Image.open('{}cut1-001.png'.format(dirfol))
     marimg = PIL.Image.open(tempfil).resize(bakimg.size)
@@ -304,56 +328,51 @@ def videotogif(tempfil, dirfol, dirsave, gifname):
         #card.save('/home/pi/git/reactionstream/reactionstream/' + indpn, format="png")
 
 
-    earthspin = os.listdir(dirsave)
-    images = list()
-    for filen in earthspin:
-        images.append(imageio.imread(dirsave + filen))
-    imageio.mimsave(gifname, images, fps=3)
-    data = open(gifname, 'rb')
-    s3.Bucket('printrecsup').put_object(Key=gifname, Body=data)
+# In[ ]:
 
 
-# In[167]:
 
 
-videotogif('/media/pi/2A7B-DD82/aceblack/Documents/devilharpy.png',
-            '/media/pi/2A7B-DD82/sie/', '/media/pi/2A7B-DD82/oput/', 'afterhack.gif') # 
+
+# In[191]:
 
 
-# In[144]:
+#videotogif('/media/pi/2A7B-DD82/aceblack/Documents/devilharpy.png',
+#            '/media/pi/2A7B-DD82/gifit/', '/media/pi/2A7B-DD82/gifput/') 
+
+
+# In[193]:
+
+
+#duration = 0.04
+
+
+# In[194]:
 
 
 #ls oput
 
 
-# In[ ]:
+# In[201]:
 
 
+def gifit(dirsave, gifname):
+    earthspin = os.listdir(dirsave)
+    earthspin = earthspin[0:500]
+    images = list()
+    for filen in earthspin:
+        images.append(imageio.imread(dirsave + filen))
+    imageio.mimsave(gifname, images)
+    
+    #data = open(gifname, 'rb')
+    #s3.Bucket('printrecsup').put_object(Key=gifname, Body=data)
+    #return 'https://printrecsup.s3.amazonaws.com/' + gifname
 
 
-
-# In[ ]:
-
+# In[203]:
 
 
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
+#gifit('/media/pi/2A7B-DD82/gifput/', 't.gif')
 
 
 # In[1]:
@@ -429,40 +448,10 @@ videotogif('/media/pi/2A7B-DD82/aceblack/Documents/devilharpy.png',
 #PIL.Image.open('some.png')
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
 # In[43]:
 
 
 #os.system('ffmpeg -i RxZR6bTi29g.mp4 ttt/cut1-%03d.png')
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
 
 
 # In[21]:
